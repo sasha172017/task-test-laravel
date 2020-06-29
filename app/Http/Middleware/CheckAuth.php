@@ -20,11 +20,11 @@ class CheckAuth
         $token = $request->bearerToken();
         $user = User::where('token', $token)->first();
         if ($user) {
-            if((new \DateTime())->getTimestamp() < (new \DateTime($user->expired_at))->getTimestamp()){
+            if((new \DateTime())->modify('+1 day')->getTimestamp() > (new \DateTime($user->expired_at))->getTimestamp()){
                 return $next($request);
             }
         }
-        return response(['message' => 'Unauthenticated'], 401);
+        return response(['message' => ['status' => false, 'text'=>'Unauthenticated']], 401);
 
 
     }

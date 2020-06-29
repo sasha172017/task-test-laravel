@@ -19,3 +19,7 @@ Route::delete('/currency/{id}', "CurrenciesController@delete")->middleware(Check
 Route::get('/currencies', "CurrenciesController@index");
 Route::get('/currency/{id}', "CurrenciesController@show");
 Route::get('/history', "CurrenciesController@history");
+Route::post('authentication', 'UserController@authentication');
+Route::get('/', function (){
+    return view('index');
+});

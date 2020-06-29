@@ -4,14 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CurrenciesRequest;
 use App\Models\Currencies;
-use App\Models\HistoryCurrencies;
-use App\Models\User;
-use GuzzleHttp\Client;
-use http\Env\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 
 class CurrenciesController extends Controller
@@ -34,23 +26,31 @@ class CurrenciesController extends Controller
             $currencies->buy = floatval($request->buy);
             $currencies->sell = floatval($request->sell);
             $currencies->save();
-            return response()->json($currencies, 201);
+            return response()->json(['message' => ['status'=>true, 'text' => 'Currency Created']], 201);
         } catch (\Exception $exception) {
-            return response(['message' => $exception->getMessage()], 500);
+            return response(['message' => ['status'=>false, 'text' => $exception->getMessage()]], 500);
         }
     }
 
 
     public function update(CurrenciesRequest $request, $id)
     {
+        $data = json_decode(file_get_contents('php://input'), true);
         try {
             $currencies = Currencies::find($id)->first();
-            $currencies->buy = floatval($request->buy);
-            $currencies->sell = floatval($request->sell);
+            $oldBuy = $currencies->buy;
+            $oldSell = $currencies->sell;
+            $currencies->buy = floatval($data['buy']);
+            $currencies->sell = floatval($data['sell']);
+            $currencies->historyCurrencies()
+                ->create([
+                    'buy' => $oldBuy,
+                    'sell' => $oldSell
+                ]);
             $currencies->save();
-            return response()->json($currencies, 200);
+            return response()->json(['message' => ['status'=>true, 'text' => 'Currency updated']], 200);
         } catch (\Exception $exception) {
-            return response(['message' => $exception->getMessage()], 500);
+            return response(['message' => ['status'=>false, 'text' => $exception->getMessage()]], 500);
 
         }
     }
@@ -59,7 +59,7 @@ class CurrenciesController extends Controller
     {
         $currencies = Currencies::find($id)->first();
         $currencies->delete();
-        return response()->json(null, 204);
+        return response()->json(['messageDelete' => 'Deleted'], 200);
     }
 
     public function history(){
