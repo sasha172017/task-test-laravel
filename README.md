@@ -4,11 +4,12 @@
 # Installation
 
 ```bash
+$ mkdir task-test/
 $ cd task-test/
 $ git init
 ```
 ```bash
-$ git remote add <origin> https://github.com/sasha172017/bibleInstitute.git
+$ git remote add <origin> https://github.com/sasha172017/task-test-laravel.git
 ```
 ```bash
 $ git pull <origin> master
