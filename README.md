@@ -26,8 +26,11 @@ $ npm run watch
 # Change DATABASE_URL
 ```
 ```bash
-php artisan migrate
+$ php artisan migrate
 ```
+```bash
+$ php artisan schedule:run 
+ ```
 
 # Usage
 ```bash
