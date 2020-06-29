@@ -35,6 +35,11 @@ $ php artisan migrate
 ```bash
 $ php artisan schedule:run 
  ```
+ ```bash
+$ php artisan db:seed --class=UserSeeder 
+ ```
+ 
+
 
 # Usage
 ```bash
