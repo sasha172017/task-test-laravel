@@ -45,3 +45,8 @@ $ php artisan db:seed --class=UserSeeder
 ```bash
 $ php artisan serve
 ```
+```bash
+# login: user@mail.com
+# password: 12345
+
+```
