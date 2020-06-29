@@ -17,7 +17,6 @@ class UserController extends Controller
         $user = User::where(['email' => $data['email']])->first();
         if($user){
             if(Hash::check($data['password'], $user->password)){
-                $user->token = Str::random(60);
                 $user->expired_at = (new \DateTime())->format('Y-m-d H:s');
                 $user->save();
                 return response()->json(['message' => ['status' => true, 'text' =>'You are logged in'], 'token' => $user->token]);
